@@ -21,4 +21,10 @@ class DemoApplicationTests {
 		demoApplication.todos() shouldBeEqualTo mutableListOf(ToDo(1, "First", "This is the first todo"))
 	}
 
+	@Test
+	fun `should return a single todo`() {
+		every { todosService.getTodo(0) } returns ToDo(1, "First", "This is the first todo")
+		demoApplication.todo(0) shouldBeEqualTo ToDo(1, "First", "This is the first todo")
+	}
+
 }
