@@ -1,3 +1,4 @@
+val mockkVersion = "1.13.12"
 plugins {
 	kotlin("jvm") version "1.9.25"
 	kotlin("plugin.spring") version "1.9.25"
@@ -39,6 +40,7 @@ dependencies {
 	compileOnly("org.projectlombok:lombok")
 	annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
 	annotationProcessor("org.projectlombok:lombok")
+	testImplementation("io.mockk:mockk:${mockkVersion}")
 	testImplementation("org.amshove.kluent:kluent:1.73")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 	testImplementation("org.springframework.boot:spring-boot-testcontainers")

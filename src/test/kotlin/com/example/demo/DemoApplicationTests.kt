@@ -1,6 +1,9 @@
 package com.example.demo
 
 import com.example.demo.todos.ToDo
+import com.example.demo.todos.service.TodosService
+import io.mockk.every
+import io.mockk.mockk
 import org.amshove.kluent.shouldBeEqualTo
 import org.junit.jupiter.api.Test
 import org.springframework.boot.test.context.SpringBootTest
@@ -9,10 +12,13 @@ import org.springframework.context.annotation.Import
 @Import(TestcontainersConfiguration::class)
 @SpringBootTest
 class DemoApplicationTests {
+	private val todosService = mockk<TodosService>()
+	private val demoApplication = DemoApplication(todosService)
 
 	@Test
 	fun `should return todo list`() {
-		DemoApplication().todos() shouldBeEqualTo listOf(ToDo(1, "First", "This is the first todo"))
+		every { todosService.getTodos() } returns mutableListOf(ToDo(1, "First", "This is the first todo"))
+		demoApplication.todos() shouldBeEqualTo mutableListOf(ToDo(1, "First", "This is the first todo"))
 	}
 
 }
