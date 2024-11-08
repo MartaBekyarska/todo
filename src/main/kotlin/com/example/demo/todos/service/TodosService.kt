@@ -32,4 +32,11 @@ class TodosService(val todoTasks: MutableList<ToDo>) {
         }
         return todo
     }
+
+    fun delete(id: String) {
+        val todo = todoTasks.find { it.id == id }
+        todo?.let {
+            todoTasks.remove(it)
+        }
+    }
 }

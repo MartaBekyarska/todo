@@ -53,4 +53,13 @@ class TodosServiceTest {
             "This is an updated task"
         )
     }
+
+    @Test
+    fun deleteTodo() {
+        val todosService = TodosService(
+            todoTasks = mutableListOf(todo)
+        )
+        todosService.delete("1ab4c63b2d")
+        todosService.todoTasks.size shouldBeEqualTo 0
+    }
 }
