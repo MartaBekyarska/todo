@@ -5,20 +5,19 @@ import com.example.demo.todos.service.ToDoRequest
 import com.example.demo.todos.service.TodosService
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PathVariable
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 
 @SpringBootApplication
 @RestController
 class DemoApplication (val todosService: TodosService) {
-	@GetMapping
+	@GetMapping("/todos")
 	fun todos(): MutableList<ToDo> = todosService.getTodos()
 
 	@GetMapping("/todo/{id}")
 	fun todo(@PathVariable id: Int): ToDo = todosService.getTodo(id)
 
-	fun createTodo(toDoRequest: ToDoRequest): ToDo = todosService.createTodo(toDoRequest)
+	@PostMapping("/todos")
+	fun createTodo(@RequestBody toDoRequest: ToDoRequest): ToDo = todosService.createTodo(toDoRequest)
 }
 	fun main(args: Array<String>) {
 		runApplication<DemoApplication>(*args)

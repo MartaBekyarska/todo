@@ -18,19 +18,19 @@ class DemoApplicationTests {
 
 	@Test
 	fun `should return todo list`() {
-		every { todosService.getTodos() } returns mutableListOf(ToDo(1, "First", "This is the first todo"))
-		demoApplication.todos() shouldBeEqualTo mutableListOf(ToDo(1, "First", "This is the first todo"))
+		every { todosService.getTodos() } returns mutableListOf(ToDo("1ab4c63b2d", "First", "This is the first todo"))
+		demoApplication.todos() shouldBeEqualTo mutableListOf(ToDo("1ab4c63b2d", "First", "This is the first todo"))
 	}
 
 	@Test
 	fun `should return a single todo`() {
-		every { todosService.getTodo(0) } returns ToDo(1, "First", "This is the first todo")
-		demoApplication.todo(0) shouldBeEqualTo ToDo(1, "First", "This is the first todo")
+		every { todosService.getTodo(0) } returns ToDo("1ab4c63b2d", "First", "This is the first todo")
+		demoApplication.todo(0) shouldBeEqualTo ToDo("1ab4c63b2d", "First", "This is the first todo")
 	}
 
 	@Test
 	fun `should create a single todo with generated id`() {
-		every { todosService.createTodo(ToDoRequest("First", "This is a new task")) } returns ToDo(1, "Task", "This is a new task")
-		demoApplication.createTodo(ToDoRequest("First", "This is a new task")) shouldBeEqualTo ToDo(1, "Task", "This is a new task")
+		every { todosService.createTodo(ToDoRequest("First", "This is a new task")) } returns ToDo("1ab4c63b2d", "Task", "This is a new task")
+		demoApplication.createTodo(ToDoRequest("First", "This is a new task")) shouldBeEqualTo ToDo("1ab4c63b2d", "Task", "This is a new task")
 	}
 }

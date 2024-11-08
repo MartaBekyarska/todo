@@ -1,19 +1,21 @@
 package com.example.demo.todos.service
 
 import com.example.demo.todos.ToDo
+import org.amshove.kluent.`should not be`
 import org.amshove.kluent.shouldBeEqualTo
 import org.junit.jupiter.api.Test
+import java.util.*
 
 class TodosServiceTest {
 
     @Test
     fun getTodos() {
         TodosService(
-            todoTasks = mutableListOf(ToDo(0, "task", ""))
+            todoTasks = mutableListOf(ToDo("1ab4c63b2d", "task", ""))
         )
             .todoTasks shouldBeEqualTo mutableListOf(
             ToDo(
-                0,
+                "1ab4c63b2d",
                 "task",
                 ""
             )
@@ -23,10 +25,10 @@ class TodosServiceTest {
     @Test
     fun getTodo() {
         TodosService(
-            todoTasks = mutableListOf(ToDo(0, "task", ""))
+            todoTasks = mutableListOf(ToDo("1ab4c63b2d", "task", ""))
         )
             .getTodo(0) shouldBeEqualTo ToDo(
-            0,
+            "1ab4c63b2d",
             "task",
             ""
         )
@@ -34,13 +36,13 @@ class TodosServiceTest {
 
     @Test
     fun createTodo() {
-        TodosService(
+        val newTodo = TodosService(
             todoTasks = mutableListOf()
         )
-            .createTodo(ToDoRequest("Task", "This is a new task")) shouldBeEqualTo ToDo(
-            1,
-            "Task",
-            "This is a new task"
-        )
+            .createTodo(ToDoRequest("New Task", "This is a new task"))
+
+        UUID.fromString(newTodo.id) `should not be` null
+        newTodo.title shouldBeEqualTo "New Task"
+        newTodo.description shouldBeEqualTo "This is a new task"
     }
 }

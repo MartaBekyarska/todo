@@ -1,3 +1,3 @@
 package com.example.demo.todos
 
-data class ToDo(val id: Int, val title: String, val description: String?)
+data class ToDo(val id: String, val title: String, val description: String?)
