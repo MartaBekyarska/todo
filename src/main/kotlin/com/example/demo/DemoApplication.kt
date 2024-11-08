@@ -5,6 +5,7 @@ import com.example.demo.todos.service.ToDoRequest
 import com.example.demo.todos.service.TodosService
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
+import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 
 @SpringBootApplication
@@ -28,6 +29,12 @@ class DemoApplication (val todosService: TodosService) {
 		)
 		todosService.update(id, toDoRequest)
 		return updatedTodo
+	}
+
+	@DeleteMapping("/todo/{id}")
+	fun delete(@PathVariable id: String): ResponseEntity<Unit> {
+		todosService.delete(id)
+		return ResponseEntity.noContent().build()
 	}
 }
 
