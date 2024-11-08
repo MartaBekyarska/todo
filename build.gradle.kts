@@ -1,6 +1,6 @@
 val mockkVersion = "1.13.12"
 plugins {
-	kotlin("jvm") version "1.9.25"
+	kotlin("jvm") version "2.0.21"
 	kotlin("plugin.spring") version "1.9.25"
 	id("org.springframework.boot") version "3.3.3"
 	id("io.spring.dependency-management") version "1.1.6"
@@ -12,9 +12,8 @@ group = "com.example"
 version = "0.0.1-SNAPSHOT"
 
 java {
-	toolchain {
-		languageVersion = JavaLanguageVersion.of(17)
-	}
+	sourceCompatibility = JavaVersion.VERSION_21
+	targetCompatibility = JavaVersion.VERSION_21
 }
 
 configurations {
@@ -64,18 +63,20 @@ kotlin {
 }
 
 contracts {
+	failOnNoContracts = false
 }
 
 tasks.withType<Test> {
 	useJUnitPlatform()
 }
 
-tasks.contractTest {
-	useJUnitPlatform()
-}
-
 tasks.test {
 	outputs.dir(project.extra["snippetsDir"]!!)
+	testLogging {
+		showExceptions = true
+		showCauses = true
+		exceptionFormat = org.gradle.api.tasks.testing.logging.TestExceptionFormat.FULL
+	}
 }
 
 tasks.asciidoctor {

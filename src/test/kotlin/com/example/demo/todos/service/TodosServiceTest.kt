@@ -31,4 +31,16 @@ class TodosServiceTest {
             ""
         )
     }
+
+    @Test
+    fun createTodo() {
+        TodosService(
+            todoTasks = mutableListOf()
+        )
+            .createTodo(ToDoRequest("Task", "This is a new task")) shouldBeEqualTo ToDo(
+            1,
+            "Task",
+            "This is a new task"
+        )
+    }
 }

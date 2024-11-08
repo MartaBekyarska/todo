@@ -1,6 +1,7 @@
 package com.example.demo
 
 import com.example.demo.todos.ToDo
+import com.example.demo.todos.service.ToDoRequest
 import com.example.demo.todos.service.TodosService
 import io.mockk.every
 import io.mockk.mockk
@@ -27,4 +28,9 @@ class DemoApplicationTests {
 		demoApplication.todo(0) shouldBeEqualTo ToDo(1, "First", "This is the first todo")
 	}
 
+	@Test
+	fun `should create a single todo with generated id`() {
+		every { todosService.createTodo(ToDoRequest("First", "This is a new task")) } returns ToDo(1, "Task", "This is a new task")
+		demoApplication.createTodo(ToDoRequest("First", "This is a new task")) shouldBeEqualTo ToDo(1, "Task", "This is a new task")
+	}
 }

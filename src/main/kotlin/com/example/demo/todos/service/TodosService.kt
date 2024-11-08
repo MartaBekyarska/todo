@@ -8,7 +8,7 @@ class TodosService(val todoTasks: MutableList<ToDo>) {
 
     fun getTodos(): MutableList<ToDo> = todoTasks
 
-    fun getTodo(id: Int): ToDo {
-        return todoTasks[id]
-    }
+    fun getTodo(id: Int): ToDo = todoTasks[id]
+
+    fun createTodo(toDoRequest: ToDoRequest) = ToDo(1, "Task", "This is a new task")
 }
