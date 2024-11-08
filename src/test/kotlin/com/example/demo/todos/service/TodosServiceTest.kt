@@ -8,30 +8,24 @@ import java.util.*
 
 class TodosServiceTest {
 
+    private val todo = ToDo("1ab4c63b2d", "task", "")
+
     @Test
     fun getTodos() {
         TodosService(
-            todoTasks = mutableListOf(ToDo("1ab4c63b2d", "task", ""))
+            todoTasks = mutableListOf(todo)
         )
             .todoTasks shouldBeEqualTo mutableListOf(
-            ToDo(
-                "1ab4c63b2d",
-                "task",
-                ""
-            )
+            todo
         )
     }
 
     @Test
     fun getTodo() {
         TodosService(
-            todoTasks = mutableListOf(ToDo("1ab4c63b2d", "task", ""))
+            todoTasks = mutableListOf(todo)
         )
-            .getTodo(0) shouldBeEqualTo ToDo(
-            "1ab4c63b2d",
-            "task",
-            ""
-        )
+            .getTodo("1ab4c63b2d") shouldBeEqualTo todo
     }
 
     @Test
@@ -44,5 +38,19 @@ class TodosServiceTest {
         UUID.fromString(newTodo.id) `should not be` null
         newTodo.title shouldBeEqualTo "New Task"
         newTodo.description shouldBeEqualTo "This is a new task"
+    }
+
+    @Test
+    fun updateTodo() {
+        val updatedTodo = TodosService(
+            todoTasks = mutableListOf(todo)
+        )
+            .update("1ab4c63b2d", ToDoRequest("Updated Task", "This is an updated task"))
+
+        updatedTodo shouldBeEqualTo ToDo(
+            "1ab4c63b2d",
+            "Updated Task",
+            "This is an updated task"
+        )
     }
 }

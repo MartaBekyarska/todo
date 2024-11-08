@@ -14,11 +14,23 @@ class DemoApplication (val todosService: TodosService) {
 	fun todos(): MutableList<ToDo> = todosService.getTodos()
 
 	@GetMapping("/todo/{id}")
-	fun todo(@PathVariable id: Int): ToDo = todosService.getTodo(id)
+	fun todo(@PathVariable id: String): ToDo? = todosService.getTodo(id)
 
 	@PostMapping("/todos")
 	fun createTodo(@RequestBody toDoRequest: ToDoRequest): ToDo = todosService.createTodo(toDoRequest)
+
+	@PutMapping("/todo/{id}")
+	fun updateTodo(@PathVariable id: String, @RequestBody toDoRequest: ToDoRequest): ToDo? {
+		val todo = todosService.getTodo(id)
+		val updatedTodo = todo?.copy(
+			title = toDoRequest.title,
+			description = toDoRequest.description
+		)
+		todosService.update(id, toDoRequest)
+		return updatedTodo
+	}
 }
+
 	fun main(args: Array<String>) {
 		runApplication<DemoApplication>(*args)
 	}
