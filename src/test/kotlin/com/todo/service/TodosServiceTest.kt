@@ -1,6 +1,7 @@
-package com.example.demo.todos.service
+package com.todo.service
 
-import com.example.demo.todos.ToDo
+import com.todo.ToDo
+import com.todo.ToDoRequest
 import org.amshove.kluent.`should not be`
 import org.amshove.kluent.shouldBeEqualTo
 import org.junit.jupiter.api.Test

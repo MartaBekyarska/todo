@@ -1,8 +1,6 @@
-package com.example.demo
+package com.todo
 
-import com.example.demo.todos.ToDo
-import com.example.demo.todos.service.ToDoRequest
-import com.example.demo.todos.service.TodosService
+import com.todo.service.TodosService
 import io.mockk.every
 import io.mockk.*
 import org.junit.jupiter.api.AfterEach
@@ -22,11 +20,11 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.*
 import org.springframework.web.server.ResponseStatusException
 
-@Import(TestcontainersConfiguration::class)
+@Import(TodoApplicationTests.ControllerTestConfig::class)
 @SpringBootTest
 @AutoConfigureMockMvc
 @TestInstance(PER_CLASS)
-class DemoApplicationTests {
+class TodoApplicationTests {
 
 	@TestConfiguration
 	class ControllerTestConfig {

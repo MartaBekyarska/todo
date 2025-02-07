@@ -1,6 +1,7 @@
-package com.example.demo.todos.service
+package com.todo.service
 
-import com.example.demo.todos.ToDo
+import com.todo.ToDo
+import com.todo.ToDoRequest
 import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service
 import org.springframework.web.server.ResponseStatusException

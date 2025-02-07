@@ -1,8 +1,6 @@
-package com.example.demo
+package com.todo
 
-import com.example.demo.todos.ToDo
-import com.example.demo.todos.service.ToDoRequest
-import com.example.demo.todos.service.TodosService
+import com.todo.service.TodosService
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
 import org.springframework.http.ResponseEntity
@@ -10,7 +8,7 @@ import org.springframework.web.bind.annotation.*
 
 @SpringBootApplication
 @RestController
-class DemoApplication (val todosService: TodosService) {
+class TodoApplication (val todosService: TodosService) {
 	@GetMapping("/v1/todos")
 	fun todos(): MutableList<ToDo> = todosService.getTodos()
 
@@ -35,5 +33,5 @@ class DemoApplication (val todosService: TodosService) {
 }
 
 	fun main(args: Array<String>) {
-		runApplication<DemoApplication>(*args)
+		runApplication<TodoApplication>(*args)
 	}

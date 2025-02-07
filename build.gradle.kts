@@ -8,7 +8,7 @@ plugins {
 	id("org.asciidoctor.jvm.convert") version "3.3.2"
 }
 
-group = "com.example"
+group = "com.todo"
 version = "0.0.1-SNAPSHOT"
 
 java {

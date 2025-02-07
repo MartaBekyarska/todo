@@ -1,4 +1,4 @@
-package com.example.demo
+package com.todo
 
 import org.springframework.boot.test.context.TestConfiguration
 
