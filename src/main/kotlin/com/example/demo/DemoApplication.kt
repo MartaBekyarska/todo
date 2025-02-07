@@ -11,29 +11,25 @@ import org.springframework.web.bind.annotation.*
 @SpringBootApplication
 @RestController
 class DemoApplication (val todosService: TodosService) {
-	@GetMapping("/todos")
+	@GetMapping("/v1/todos")
 	fun todos(): MutableList<ToDo> = todosService.getTodos()
 
-	@GetMapping("/todo/{id}")
+	@GetMapping("/v1/todo/{id}")
 	fun todo(@PathVariable id: String): ToDo? = todosService.getTodo(id)
 
-	@PostMapping("/todos")
+	@PostMapping("/v1/todo")
 	fun createTodo(@RequestBody toDoRequest: ToDoRequest): ToDo = todosService.createTodo(toDoRequest)
 
-	@PutMapping("/todo/{id}")
+	@PutMapping("/v1/todo/{id}")
 	fun updateTodo(@PathVariable id: String, @RequestBody toDoRequest: ToDoRequest): ToDo? {
 		val todo = todosService.getTodo(id)
-		val updatedTodo = todo?.copy(
-			title = toDoRequest.title,
-			description = toDoRequest.description
-		)
-		todosService.update(id, toDoRequest)
-		return updatedTodo
+		return todo?.id?.let { todosService.update(todo, toDoRequest) }
 	}
 
-	@DeleteMapping("/todo/{id}")
+	@DeleteMapping("/v1/todo/{id}")
 	fun delete(@PathVariable id: String): ResponseEntity<Unit> {
-		todosService.delete(id)
+		val todo = todosService.getTodo(id)
+		todo?.let { todosService.delete(it) }
 		return ResponseEntity.noContent().build()
 	}
 }

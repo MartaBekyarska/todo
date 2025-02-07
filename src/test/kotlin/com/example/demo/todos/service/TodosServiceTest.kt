@@ -4,6 +4,8 @@ import com.example.demo.todos.ToDo
 import org.amshove.kluent.`should not be`
 import org.amshove.kluent.shouldBeEqualTo
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertThrows
+import org.springframework.web.server.ResponseStatusException
 import java.util.*
 
 class TodosServiceTest {
@@ -22,10 +24,19 @@ class TodosServiceTest {
 
     @Test
     fun getTodo() {
-        TodosService(
-            todoTasks = mutableListOf(todo)
-        )
+        TodosService(todoTasks = mutableListOf(todo))
             .getTodo("1ab4c63b2d") shouldBeEqualTo todo
+    }
+
+    @Test
+    fun getTodoNotFound() {
+        val todosService = TodosService(mutableListOf())
+
+        val exception = assertThrows<ResponseStatusException> {
+            todosService.getTodo("1ab4c63b2d")
+        }
+
+        exception.reason shouldBeEqualTo "Todo not found"
     }
 
     @Test
@@ -45,7 +56,7 @@ class TodosServiceTest {
         val updatedTodo = TodosService(
             todoTasks = mutableListOf(todo)
         )
-            .update("1ab4c63b2d", ToDoRequest("Updated Task", "This is an updated task"))
+            .update(todo, ToDoRequest("Updated Task", "This is an updated task"))
 
         updatedTodo shouldBeEqualTo ToDo(
             "1ab4c63b2d",
@@ -59,7 +70,7 @@ class TodosServiceTest {
         val todosService = TodosService(
             todoTasks = mutableListOf(todo)
         )
-        todosService.delete("1ab4c63b2d")
+        todosService.delete(todo)
         todosService.todoTasks.size shouldBeEqualTo 0
     }
 }

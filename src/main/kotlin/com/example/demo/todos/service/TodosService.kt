@@ -1,7 +1,9 @@
 package com.example.demo.todos.service
 
 import com.example.demo.todos.ToDo
+import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service
+import org.springframework.web.server.ResponseStatusException
 import java.util.UUID
 
 @Service
@@ -11,7 +13,7 @@ class TodosService(val todoTasks: MutableList<ToDo>) {
 
     fun getTodo(id: String): ToDo? {
         val todo = todoTasks.find { it.id == id }
-        return todo
+        return todo ?: throw ResponseStatusException(HttpStatus.NOT_FOUND, "Todo not found")
     }
 
     fun createTodo(toDoRequest: ToDoRequest): ToDo {
@@ -24,19 +26,14 @@ class TodosService(val todoTasks: MutableList<ToDo>) {
         return newTodo
     }
 
-    fun update(id: String, toDoRequest: ToDoRequest): ToDo? {
-        val todo = todoTasks.find { it.id == id }
-            todo.let {
-            it?.title = toDoRequest.title
-            it?.description = toDoRequest.description
-        }
-        return todo
+    fun update(todo: ToDo, toDoRequest: ToDoRequest): ToDo {
+        return todo.copy(
+            title = toDoRequest.title,
+            description = toDoRequest.description
+        )
     }
 
-    fun delete(id: String) {
-        val todo = todoTasks.find { it.id == id }
-        todo?.let {
-            todoTasks.remove(it)
-        }
+    fun delete(todo: ToDo) {
+        todoTasks.remove(todo)
     }
 }

@@ -47,6 +47,7 @@ dependencies {
 	testImplementation("org.springframework.cloud:spring-cloud-starter-contract-verifier")
 	testImplementation("org.springframework.restdocs:spring-restdocs-mockmvc")
 	testImplementation("org.testcontainers:junit-jupiter")
+	testImplementation("com.ninja-squad:springmockk:4.0.2")
 	testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }
 
