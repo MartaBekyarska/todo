@@ -9,13 +9,13 @@ import org.junit.jupiter.api.assertThrows
 import org.springframework.web.server.ResponseStatusException
 import java.util.*
 
-class TodosServiceTest {
+class TodoServiceTest {
 
     private val todo = ToDo("1ab4c63b2d", "task", "")
 
     @Test
     fun getTodos() {
-        TodosService(
+        TodoService(
             todoTasks = mutableListOf(todo)
         )
             .todoTasks shouldBeEqualTo mutableListOf(
@@ -25,16 +25,16 @@ class TodosServiceTest {
 
     @Test
     fun getTodo() {
-        TodosService(todoTasks = mutableListOf(todo))
+        TodoService(todoTasks = mutableListOf(todo))
             .getTodo("1ab4c63b2d") shouldBeEqualTo todo
     }
 
     @Test
     fun getTodoNotFound() {
-        val todosService = TodosService(mutableListOf())
+        val todoService = TodoService(mutableListOf())
 
         val exception = assertThrows<ResponseStatusException> {
-            todosService.getTodo("1ab4c63b2d")
+            todoService.getTodo("1ab4c63b2d")
         }
 
         exception.reason shouldBeEqualTo "Todo not found"
@@ -42,7 +42,7 @@ class TodosServiceTest {
 
     @Test
     fun createTodo() {
-        val newTodo = TodosService(
+        val newTodo = TodoService(
             todoTasks = mutableListOf()
         )
             .createTodo(ToDoRequest("New Task", "This is a new task"))
@@ -54,7 +54,7 @@ class TodosServiceTest {
 
     @Test
     fun updateTodo() {
-        val updatedTodo = TodosService(
+        val updatedTodo = TodoService(
             todoTasks = mutableListOf(todo)
         )
             .update(todo, ToDoRequest("Updated Task", "This is an updated task"))
@@ -68,10 +68,10 @@ class TodosServiceTest {
 
     @Test
     fun deleteTodo() {
-        val todosService = TodosService(
+        val todoService = TodoService(
             todoTasks = mutableListOf(todo)
         )
-        todosService.delete(todo)
-        todosService.todoTasks.size shouldBeEqualTo 0
+        todoService.delete(todo)
+        todoService.todoTasks.size shouldBeEqualTo 0
     }
 }

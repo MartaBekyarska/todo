@@ -8,7 +8,7 @@ import org.springframework.web.server.ResponseStatusException
 import java.util.UUID
 
 @Service
-class TodosService(val todoTasks: MutableList<ToDo>) {
+class TodoService(val todoTasks: MutableList<ToDo>) {
 
     fun getTodos(): MutableList<ToDo> = todoTasks
 
