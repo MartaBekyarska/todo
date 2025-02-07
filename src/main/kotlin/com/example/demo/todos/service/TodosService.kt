@@ -27,10 +27,15 @@ class TodosService(val todoTasks: MutableList<ToDo>) {
     }
 
     fun update(todo: ToDo, toDoRequest: ToDoRequest): ToDo {
-        return todo.copy(
+        val updatedTodo = todo.copy(
             title = toDoRequest.title,
             description = toDoRequest.description
         )
+        val index = todoTasks.indexOf(todo)
+        if (index != -1) {
+            todoTasks[index] = updatedTodo
+        }
+        return updatedTodo
     }
 
     fun delete(todo: ToDo) {
