@@ -18,7 +18,7 @@ class TodoServiceTest {
         TodoService(
             todoTasks = mutableListOf(todo)
         )
-            .todoTasks shouldBeEqualTo mutableListOf(
+            .getTodos() shouldBeEqualTo mutableListOf(
             todo
         )
     }

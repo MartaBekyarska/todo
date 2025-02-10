@@ -1,5 +1,5 @@
 # ToDo application
-* Simple web application which can be used to manage a Todo tasks list. It consists of various different endpoints like:
+* Simple Springboot web application which can be used to manage a Todo tasks list. It consists of various different endpoints like:
     * fetching all tasks:
       ```http
       GET /v1/todos 200 OK
