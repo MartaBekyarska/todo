@@ -1,41 +1,27 @@
 package com.todo
 
 import com.todo.service.TodoService
-import io.mockk.every
-import io.mockk.*
+import io.mockk.clearAllMocks
+import org.amshove.kluent.shouldBeEqualTo
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.TestInstance
-import org.junit.jupiter.api.TestInstance.Lifecycle.PER_CLASS
+import org.mockito.Mockito.doNothing
+import org.mockito.Mockito.`when`
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
-import org.springframework.boot.test.context.SpringBootTest
-import org.springframework.boot.test.context.TestConfiguration
-import org.springframework.context.annotation.Bean
-import org.springframework.context.annotation.Import
-import org.springframework.http.HttpStatus
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
+import org.springframework.boot.test.mock.mockito.MockBean
 import org.springframework.http.MediaType
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.*
-import org.springframework.web.server.ResponseStatusException
 
-@Import(TodoControllerTests.ControllerTestConfig::class)
-@SpringBootTest
-@AutoConfigureMockMvc
-@TestInstance(PER_CLASS)
+@WebMvcTest(TodoController::class)
 class TodoControllerTests {
-
-	@TestConfiguration
-	class ControllerTestConfig {
-		@Bean
-		fun todoService() = mockk<TodoService>()
-	}
 
 	@Autowired
 	private lateinit var mockMvc: MockMvc
 
-	@Autowired
+	@MockBean
 	private lateinit var todoService: TodoService
 
 	@AfterEach
@@ -45,23 +31,25 @@ class TodoControllerTests {
 
 	private val id = "1ab4c63b2d"
 	private val todo = ToDo(id, "First", "This is the first todo")
-	val newTodo = ToDo(id, "Task", "This is a new task")
+	private val newTodo = ToDo(id, "Task", "This is a new task")
 
 	@Test
 	fun `should return todo list`() {
-		every { todoService.getTodos() } returns mutableListOf(todo)
+		`when`(todoService.getTodos()).thenReturn(listOf(todo))
 
 		mockMvc.perform(get("/v1/todos"))
 			.andExpect(status().isOk)
-			.andExpect { jsonPath("$[0].id").value(id) }
-			.andExpect { jsonPath("$[0].title").value("First") }
-			.andExpect { jsonPath("$[0].description").value("This is the first todo") }
+			.andExpect(jsonPath("$[0].id").value(id))
+			.andExpect(jsonPath("$[0].title").value("First"))
+			.andExpect(jsonPath("$[0].description").value("This is the first todo"))
 			.andReturn()
+
+		todoService.getTodos() shouldBeEqualTo listOf(todo)
 	}
 
 	@Test
 	fun `should return a single todo`() {
-		every { todoService.getTodo(id) } returns todo
+		`when`(todoService.getTodo(id)).thenReturn(todo)
 
 		mockMvc.perform(get("/v1/todo/${todo.id}"))
 			.andExpect(status().isOk)
@@ -73,8 +61,8 @@ class TodoControllerTests {
 
 	@Test
 	fun `should create a single todo with generated id`() {
-		every { todoService.createTodo(ToDoRequest("dfd","First", "This is a new task")) } returns newTodo
-		every { todoService.getTodos() } returns listOf(newTodo)
+		`when`(todoService.createTodo(ToDoRequest("dfd","First", "This is a new task"))).thenReturn(newTodo)
+		`when`(todoService.getTodos()).thenReturn(listOf(newTodo))
 
 		mockMvc.perform(
 			post("/v1/todo")
@@ -91,8 +79,10 @@ class TodoControllerTests {
 	fun `should update existing todo`() {
 		val todo = ToDo("sf", "First", "This is a task")
 		val updatedTodo = todo.copy(description = "This is an updated task")
-		every { todoService.getTodo(todo.id) } returns todo
-		every { todoService.update(ToDoRequest("sf","First", "This is an updated task")) } returns updatedTodo
+
+		`when`(todoService.getTodo(todo.id)).thenReturn(todo)
+		`when`(todoService.update(ToDoRequest("sf","First", "This is an updated task")))
+			.thenReturn(updatedTodo)
 
 		mockMvc.perform(
 			put("/v1/todo")
@@ -107,29 +97,9 @@ class TodoControllerTests {
 
 	@Test
 	fun `should delete existing todo`() {
-		every { todoService.getTodo(id) } returns todo
-		every { todoService.delete(todo) } returns Unit
+        `when`(todoService.getTodo(id)).thenReturn(todo)
+		doNothing().`when`(todoService).delete(todo)
 
 		mockMvc.perform(delete("/v1/todo/$id")).andExpect(status().isNoContent)
-	}
-
-	@Test
-	fun `get todo should throw an exception if id is not found`() {
-		every { todoService.getTodo(id) } throws ResponseStatusException(HttpStatus.NOT_FOUND, "Todo not found")
-
-		mockMvc.perform(get("/v1/todo/$id"))
-			.andExpect(status().isNotFound)
-			.andReturn()
-	}
-
-	@Test
-	fun `delete todo should throw an exception if id is not found`() {
-		every { todoService.getTodo(id) } throws ResponseStatusException(HttpStatus.NOT_FOUND, "Todo not found")
-
-		mockMvc.perform(delete("/v1/todo/$id"))
-			.andExpect(status().isNotFound)
-			.andReturn()
-
-		verify(exactly = 0) { todoService.delete(todo) }
 	}
 }

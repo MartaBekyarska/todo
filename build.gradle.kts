@@ -39,7 +39,6 @@ dependencies {
 	compileOnly("org.projectlombok:lombok")
 	annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
 	annotationProcessor("org.projectlombok:lombok")
-	testImplementation("io.mockk:mockk:${mockkVersion}")
 	testImplementation("org.amshove.kluent:kluent:1.73")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 	testImplementation("org.springframework.boot:spring-boot-testcontainers")
@@ -49,6 +48,7 @@ dependencies {
 	testImplementation("org.testcontainers:junit-jupiter")
 	testImplementation("com.ninja-squad:springmockk:4.0.2")
 	testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+	testImplementation("org.mockito:mockito-core:5.15.2")
 }
 
 dependencyManagement {
