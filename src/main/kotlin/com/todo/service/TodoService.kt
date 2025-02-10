@@ -2,19 +2,18 @@ package com.todo.service
 
 import com.todo.ToDo
 import com.todo.ToDoRequest
-import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service
-import org.springframework.web.server.ResponseStatusException
 import java.util.UUID
 
 @Service
-class TodoService(val todoTasks: MutableList<ToDo>) {
+class TodoService {
+    private val todoTasks: MutableList<ToDo> = mutableListOf()
 
-    fun getTodos(): MutableList<ToDo> = todoTasks
+    fun getTodos(): List<ToDo> = todoTasks
 
-    fun getTodo(id: String): ToDo? {
-        val todo = todoTasks.find { it.id == id }
-        return todo ?: throw ResponseStatusException(HttpStatus.NOT_FOUND, "Todo not found")
+    fun getTodo(id: String): ToDo {
+        val todo = todoTasks.find { it.id == id }!!
+        return todo
     }
 
     fun createTodo(toDoRequest: ToDoRequest): ToDo {
@@ -27,15 +26,16 @@ class TodoService(val todoTasks: MutableList<ToDo>) {
         return newTodo
     }
 
-    fun update(todo: ToDo, toDoRequest: ToDoRequest): ToDo {
-        val updatedTodo = todo.copy(
-            title = toDoRequest.title,
-            description = toDoRequest.description
-        )
-        val index = todoTasks.indexOf(todo)
-        if (index != -1) {
-            todoTasks[index] = updatedTodo
-        }
+    fun update(toDoRequest: ToDoRequest): ToDo {
+        val todo = todoTasks.find { it.id == toDoRequest.id }!!
+        val updatedTodo = toDoRequest.id?.let {
+            todo.copy(
+                id = it,
+                title = toDoRequest.title,
+                description = toDoRequest.description
+            )
+        }!!
+        todoTasks[todoTasks.indexOf(todo)] = updatedTodo
         return updatedTodo
     }
 

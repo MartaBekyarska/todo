@@ -73,11 +73,12 @@ class TodoControllerTests {
 
 	@Test
 	fun `should create a single todo with generated id`() {
-		every { todoService.createTodo(ToDoRequest("First", "This is a new task")) } returns newTodo
+		every { todoService.createTodo(ToDoRequest("dfd","First", "This is a new task")) } returns newTodo
+		every { todoService.getTodos() } returns listOf(newTodo)
 
 		mockMvc.perform(
 			post("/v1/todo")
-			.content("""{"title": "First", "description": "This is a new task"}""")
+			.content("""{"id": "dfd", "title": "First", "description": "This is a new task"}""")
 			.contentType(MediaType.APPLICATION_JSON))
 			.andExpect(status().isOk)
 			.andExpect { jsonPath("id").value(id) }
@@ -88,14 +89,14 @@ class TodoControllerTests {
 
 	@Test
 	fun `should update existing todo`() {
-		val todo = ToDo(id, "First", "This is a task")
+		val todo = ToDo("sf", "First", "This is a task")
 		val updatedTodo = todo.copy(description = "This is an updated task")
-		every { todoService.getTodo(id) } returns todo
-		every { todoService.update(todo, ToDoRequest("First", "This is an updated task")) } returns updatedTodo
+		every { todoService.getTodo(todo.id) } returns todo
+		every { todoService.update(ToDoRequest("sf","First", "This is an updated task")) } returns updatedTodo
 
 		mockMvc.perform(
-			put("/v1/todo/$id")
-			.content("""{"title": "First", "description": "This is an updated task"}""")
+			put("/v1/todo")
+			.content("""{"id": "sf", "title": "First", "description": "This is an updated task"}""")
 			.contentType(MediaType.APPLICATION_JSON))
 			.andExpect(status().isOk)
 			.andExpect{ jsonPath("id").value(id) }

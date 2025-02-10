@@ -47,11 +47,12 @@
       ```
     * updating a task:
       ```http
-      PUT /v1/todo/{id} 200 OK
+      PUT /v1/todo 200 OK
       ```
       with request body:
       ```json
       {
+        "id": "abcbsd",
         "title": "Some title",
         "description": "Some new description"
       }
