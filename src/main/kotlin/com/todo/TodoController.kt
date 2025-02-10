@@ -1,13 +1,11 @@
 package com.todo
 
 import com.todo.service.TodoService
-import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 
-@SpringBootApplication
 @RestController
-class TodoApplication (val todoService: TodoService) {
+class TodoController (val todoService: TodoService) {
 	@GetMapping("/v1/todos")
 	fun todos(): List<ToDo> = todoService.getTodos()
 
@@ -28,7 +26,7 @@ class TodoApplication (val todoService: TodoService) {
 	@DeleteMapping("/v1/todo/{id}")
 	fun delete(@PathVariable id: String): ResponseEntity<Unit> {
 		val todo = todoService.getTodo(id)
-		todo?.let { todoService.delete(it) }
+		todo.let { todoService.delete(it) }
 		return ResponseEntity.noContent().build()
 	}
 }
