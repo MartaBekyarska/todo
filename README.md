@@ -78,7 +78,8 @@
 
 ### To run the application
  * Clone the repository
- * Run the following command and the application will start on port 8080 by default
+   * Run the following command and the application will start on port 8080 by default. 
+   * You can change the port to your desired one by adding ```--args="--server.port=8081"``` to the command
 ```./gradlew bootRun```
 
 ### To run all tests
